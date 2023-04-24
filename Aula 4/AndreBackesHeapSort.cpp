@@ -23,13 +23,13 @@ void criaHeap(int *vet, int i, int f){
 void heapSort(int *vet, int N) {
         int i, aux;
         for(i=(N-1)/2; i >= 0; i--){
-            criaHeap(vet, i, N-1);  //--criar heap a partir dos dados
+            criaHeap(vet, i, N-1);  //-criar heap a partir dos dados
         }
         for (i = N-1; i>= 1; i--){
-            aux = vet[0];           //--pegar o maior elemento da heap
+            aux = vet[0];           // -pegar o maior elemento da heap
             vet[0] = vet[i];        //  e colocar na sua posição
             vet[i] = aux;           //  correspondente no array;
-            criaHeap(vet, 0, i-1);  //-- reconstruir heap
+            criaHeap(vet, 0, i-1);  // -reconstruir heap
         }
 }
 
