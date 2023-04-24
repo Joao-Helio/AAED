@@ -49,18 +49,18 @@ void mergeSort(int *array, int l, int r) {
 
 // Helper function to print the array
 void printArray(int arr[]) {
-    int n = 10;
+    int n = 12;
     for (int i = 0; i < n; i++)
         cout << arr[i] << " ";
     cout << endl;
 }
 
 int main () {
-    int arr[] = {10, 80, 30, 90, 40, 50, 70, 45, 20, 110};
+    int arr[] = {10, 80, 30, 350, 90, 40, 50, 70, 45, 20, 110, 25};
     // int n = 7;
     cout << "Original array: ";
     printArray(arr);
-    mergeSort(arr, 0, 9);
+    mergeSort(arr, 0, 11);
     cout << "Sorted array: ";
     printArray(arr);
     return 0;
