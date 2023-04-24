@@ -70,40 +70,37 @@ void heapSort(int *vet, int N) {
 
 // QuickSort
 
-// Fonte: https://sortvisualizer.com/quicksort/
+// Fonte: Professor André Backes em https://youtu.be/spywQ2ix_Co
 
-void swap(int* a, int* b)
-{
-    int t = *a;
-    *a = *b;
-    *b = t;
-}
-
-int partition (int arr[], int low, int high)
-{
-    int pivot = arr[high];
-    int i = (low - 1);
-
-    for (int j = low; j <= high- 1; j++)
-    {
-        if (arr[j] <= pivot)
-        {
-            i++;
-            swap(&arr[i], &arr[j]);
+int particiona(int *V, int inicio, int fim){
+    int esq, dir, pivo, aux;
+    esq = inicio;
+    dir = fim;
+    pivo = V[inicio]; // pivo no inicio do vetor
+    while(esq < dir){
+        while(V[esq] <= pivo){
+            esq++;
+        }
+        while(V[dir] > pivo){
+            dir--;
+        }
+        if(esq < dir){
+            aux = V[esq];
+            V[esq] = V[dir];
+            V[dir] = aux;
         }
     }
-    swap(&arr[i + 1], &arr[high]);
-    return (i + 1);
+    V[inicio] = V[dir];
+    V[dir] = pivo;
+    return dir;
 }
 
-void quickSort(int arr[], int low, int high)
-{
-    if (low < high)
-    {
-        int pivot = partition(arr, low, high);
-
-        quickSort(arr, low, pivot - 1);
-        quickSort(arr, pivot + 1, high);
+void quickSort(int *V, int inicio, int fim){
+    int pivo;
+    if(fim > inicio){
+        pivo = particiona(V, inicio, fim);
+        quickSort(V, inicio, pivo-1);
+        quickSort(V, pivo+1, fim);
     }
 }
 
@@ -157,6 +154,7 @@ void mergeSort(int *array, int n) {
 
 //------------------------------------------------------------
 //------------------------------------------------------------
+
 // Função auxiliar para exibir e conferir arrays
 
 void printArray(int arr[]) {
@@ -166,95 +164,239 @@ void printArray(int arr[]) {
     cout << endl;
 }
 
+// Função auxiliar para calcular as médias de tempo
+
+float mediaDez(float arr[]){
+    float soma = 0;
+    for(int i = 0; i < 10 ; i++){
+        soma += arr[i];
+    }
+    float media = soma / 10;
+    return media;
+}
+
+
+// Função auxiliar para inverter a ordem e gerar vetor decrescente
+
+void inverter(int arr[], int n){
+    int i = 0;
+    int f = n - 1;
+
+    while (i < f) {
+        int aux = arr[i];
+        arr[i] = arr[f];
+        arr[f] = aux;
+        i++;
+        f--;
+    }
+}
+
+
 int main() {
 
-// gerar vetor com 100000 números aleatórios
+    int n = 100000;
+    float tShell[10], tHeap[10], tQuick[10], tMerge[10]; // arrays para guardar os tempos de execução
 
-  int array[100000];
-  srand(time(NULL));
+    cout << "Tempos de execucao para vetor aleatorio\n\n";
 
-  for(int i = 0; i < 100000; i++) {
-    array[i] = rand() % 100000; // gerar um número aleatório entre 0 e 99999
-  }
+//gerar 10 execuções
 
-  int n = 100000;
+    for(int i = 1; i < 11; i++){
+        cout << "\nExecucao em vetor aleatorio " << i << ": \n";
+    // gerar vetor com 100000 números aleatórios
 
- // cout << "Original array: ";
- // printArray(array);
+        int array[100000];
+        srand(time(NULL));
 
-  // Copiar o array para utilizar o mesmo em todos os algoritmos
+        for(int i = 0; i < 100000; i++) {
+            array[i] = rand() % 100000; // gerar um número aleatório entre 0 e 99999
+        }
 
-  int shellSorted[100000], heapSorted[100000], quickSorted[100000], mergeSorted[100000];
+        // Copiar o array para utilizar o mesmo em todos os algoritmos
 
-  for(int i = 0; i < 100000; i++){
-        shellSorted[i] = array[i];
-        heapSorted[i] = array[i];
-        quickSorted[i] = array[i];
-        mergeSorted[i] = array[i];
-  }
+        int shellSorted[100000], heapSorted[100000], quickSorted[100000], mergeSorted[100000];
 
-  // Start measuring time
-  auto startShell = high_resolution_clock::now();
+        for(int i = 0; i < 100000; i++){
+            shellSorted[i] = array[i];
+            heapSorted[i] = array[i];
+            quickSorted[i] = array[i];
+            mergeSorted[i] = array[i];
+        }
 
-  shellSort(shellSorted, n, inc, 8);
+        // Start measuring time
+        auto startShell = high_resolution_clock::now();
 
-  // Stop measuring time
-  auto stopShell = high_resolution_clock::now();
-  // Calculate the duration of the execution
-  auto durationShell = duration_cast<microseconds>(stopShell - startShell);
+        shellSort(shellSorted, n, inc, 8);
 
-  // Print the duration in milliseconds
-  printf("Tempo de Execucao Shell Sort: %.6f ms\n", durationShell.count() / 1000.0);
+        // Stop measuring time
+        auto stopShell = high_resolution_clock::now();
+        // Calculate the duration of the execution
+        auto durationShell = duration_cast<microseconds>(stopShell - startShell);
 
- // cout << "Sorted array: ";
- // printArray(shellSorted);
+        // Print the duration in milliseconds
+        printf("Tempo de Execucao Shell Sort: %.3f ms\n", durationShell.count() / 1000.0);
 
-  // Start measuring time
-  auto startHeap = high_resolution_clock::now();
+        auto startHeap = high_resolution_clock::now();
+        heapSort(heapSorted, n);
+        auto stopHeap = high_resolution_clock::now();
+        auto durationHeap = duration_cast<microseconds>(stopHeap - startHeap);
+        printf("Tempo de Execucao Heap Sort: %.3f ms\n", durationHeap.count() / 1000.0);
 
-  heapSort(heapSorted, n);
+        auto startQuick = high_resolution_clock::now();
+        quickSort(quickSorted, 0, n - 1);
+        auto stopQuick = high_resolution_clock::now();
+        auto durationQuick = duration_cast<microseconds>(stopQuick - startQuick);
+        printf("Tempo de Execucao Quick Sort: %.3f ms\n", durationQuick.count() / 1000.0);
 
-  // Stop measuring time
-  auto stopHeap = high_resolution_clock::now();
-  // Calculate the duration of the execution
-  auto durationHeap = duration_cast<microseconds>(stopHeap - startHeap);
+        auto startMerge = high_resolution_clock::now();
+        mergeSort(mergeSorted, n);
+        auto stopMerge = high_resolution_clock::now();
+        auto durationMerge = duration_cast<microseconds>(stopMerge - startMerge);
+        printf("Tempo de Execucao Merge Sort: %.3f ms\n", durationMerge.count() / 1000.0);
 
- // cout << "Sorted array: ";
- // printArray(heapSorted);
+        tShell[i] = durationShell.count() / 1000.0;
+        tHeap[i] = durationHeap.count() / 1000.0;
+        tQuick[i] = durationQuick.count() / 1000.0;
+        tMerge[i] = durationMerge.count() / 1000.0;
+    }
+    cout << "\n\n---------------------------------------------------\n\n";
+    cout << "\n\nMedias de tempo para vetor aleatorio:\n\n";
 
+    float mediaShell, mediaHeap, mediaQuick, mediaMerge;
 
-  // Print the duration in milliseconds
-  printf("Tempo de Execucao Heap Sort: %.6f ms\n", durationHeap.count() / 1000.0);
+    mediaShell = mediaDez(tShell);
+    mediaHeap = mediaDez(tHeap);
+    mediaQuick = mediaDez(tQuick);
+    mediaMerge = mediaDez(tMerge);
 
-  // Start measuring time
-  auto startQuick = high_resolution_clock::now();
+    cout << "Tempo medio Shell Sort: " << mediaShell << " ms\n";
+    cout << "Tempo medio Heap Sort: " << mediaHeap << " ms\n";
+    cout << "Tempo medio Quick Sort: " << mediaQuick << " ms\n";
+    cout << "Tempo medio Merge Sort: " << mediaMerge << " ms\n";
 
-  quickSort(quickSorted, 0, n - 1);
+    cout << "\n\n###################################################\n\n";
+    cout << "\n\nTempos de execucao para vetor ordenado\n\n";
 
-  // Stop measuring time
-  auto stopQuick = high_resolution_clock::now();
-  // Calculate the duration of the execution
-  auto durationQuick = duration_cast<microseconds>(stopQuick - startQuick);
+//gerar 10 execuções para aplicar algoritmos em um vetor ordenado crescente
 
- // cout << "Sorted array: ";
- // printArray(quickSorted);
+    for(int i = 1; i < 11; i++){
 
-  // Print the duration in milliseconds
-  printf("Tempo de Execucao Quick Sort: %.6f ms\n", durationQuick.count() / 1000.0);
+        int array[100000];
+        srand(time(NULL));
 
-  // Start measuring time
-  auto startMerge = high_resolution_clock::now();
+        for(int i = 0; i < 100000; i++) {
+            array[i] = rand() % 100000;
+        }
 
-  mergeSort(mergeSorted, n);
+        quickSort(array, 0, n - 1); // ordena o vetor com o QuickSort, que obteve o melhor desempenho no aleatorio
 
-  // Stop measuring time
-  auto stopMerge = high_resolution_clock::now();
-  // Calculate the duration of the execution
-  auto durationMerge = duration_cast<microseconds>(stopMerge - startMerge);
+        cout << "\nExecucao em Vetor Ordenado " << i << ": \n";
 
- // cout << "Sorted array: ";
- // printArray(mergeSorted);
-  // Print the duration in milliseconds
-  printf("Tempo de Execucao Merge Sort: %.6f ms\n", durationMerge.count() / 1000.0);
-  return 0;
+        auto startShell = high_resolution_clock::now();
+        shellSort(array, n, inc, 8);
+        auto stopShell = high_resolution_clock::now();
+        auto durationShell = duration_cast<microseconds>(stopShell - startShell);
+        printf("Tempo de Execucao Shell Sort: %.3f ms\n", durationShell.count() / 1000.0);
+
+        auto startHeap = high_resolution_clock::now();
+        heapSort(array, n);
+        auto stopHeap = high_resolution_clock::now();
+        auto durationHeap = duration_cast<microseconds>(stopHeap - startHeap);
+        printf("Tempo de Execucao Heap Sort: %.3f ms\n", durationHeap.count() / 1000.0);
+
+        auto startQuick = high_resolution_clock::now();
+        quickSort(array, 0, n - 1);
+        auto stopQuick = high_resolution_clock::now();
+        auto durationQuick = duration_cast<microseconds>(stopQuick - startQuick);
+        printf("Tempo de Execucao Quick Sort: %.3f ms\n", durationQuick.count() / 1000.0);
+
+        auto startMerge = high_resolution_clock::now();
+        mergeSort(array, n);
+        auto stopMerge = high_resolution_clock::now();
+        auto durationMerge = duration_cast<microseconds>(stopMerge - startMerge);
+        printf("Tempo de Execucao Merge Sort: %.3f ms\n", durationMerge.count() / 1000.0);
+
+        tShell[i] = durationShell.count() / 1000.0;
+        tHeap[i] = durationHeap.count() / 1000.0;
+        tQuick[i] = durationQuick.count() / 1000.0;
+        tMerge[i] = durationMerge.count() / 1000.0;
+    }
+    cout << "\n\n---------------------------------------------------\n\n";
+    cout << "\n\nMedias de tempo para vetor ordenado crescente:\n\n";
+
+    mediaShell = mediaDez(tShell);
+    mediaHeap = mediaDez(tHeap);
+    mediaQuick = mediaDez(tQuick);
+    mediaMerge = mediaDez(tMerge);
+
+    cout << "Tempo medio Shell Sort: " << mediaShell << " ms\n";
+    cout << "Tempo medio Heap Sort: " << mediaHeap << " ms\n";
+    cout << "Tempo medio Quick Sort: " << mediaQuick << " ms\n";
+    cout << "Tempo medio Merge Sort: " << mediaMerge << " ms\n";
+
+    cout << "\n\n###################################################\n\n";
+    cout << "\n\nTempos de execucao para vetor ordenado\n\n";
+
+    //gerar 10 execuções para aplicar algoritmos em um vetor ordenado decrescente
+
+    for(int i = 1; i < 11; i++){
+
+        int array[100000];
+        srand(time(NULL));
+
+        for(int i = 0; i < 100000; i++) {
+            array[i] = rand() % 100000;
+        }
+
+        shellSort(array, n, inc, 8); // ordena o vetor com o ShellSort, que obteve o melhor desempenho no vetor ordenado
+        inverter(array, n);            // inverte o array para aplicar os algoritmos no vetor ordenado de formadecrescente
+
+        cout << "\nExecucao Ordenado Decrescente " << i << " :\n";
+
+        auto startShell = high_resolution_clock::now();
+        shellSort(array, n, inc, 8);
+        auto stopShell = high_resolution_clock::now();
+        auto durationShell = duration_cast<microseconds>(stopShell - startShell);
+        printf("Tempo de Execucao Shell Sort: %.3f ms\n", durationShell.count() / 1000.0);
+
+        auto startHeap = high_resolution_clock::now();
+        heapSort(array, n);
+        auto stopHeap = high_resolution_clock::now();
+        auto durationHeap = duration_cast<microseconds>(stopHeap - startHeap);
+        printf("Tempo de Execucao Heap Sort: %.3f ms\n", durationHeap.count() / 1000.0);
+
+        auto startQuick = high_resolution_clock::now();
+        quickSort(array, 0, n - 1);
+        auto stopQuick = high_resolution_clock::now();
+        auto durationQuick = duration_cast<microseconds>(stopQuick - startQuick);
+        printf("Tempo de Execucao Quick Sort: %.3f ms\n", durationQuick.count() / 1000.0);
+
+        auto startMerge = high_resolution_clock::now();
+        mergeSort(array, n);
+        auto stopMerge = high_resolution_clock::now();
+        auto durationMerge = duration_cast<microseconds>(stopMerge - startMerge);
+        printf("Tempo de Execucao Merge Sort: %.3f ms\n", durationMerge.count() / 1000.0);
+
+        tShell[i] = durationShell.count() / 1000.0;
+        tHeap[i] = durationHeap.count() / 1000.0;
+        tQuick[i] = durationQuick.count() / 1000.0;
+        tMerge[i] = durationMerge.count() / 1000.0;
+    }
+    cout << "\n\n---------------------------------------------------\n\n";
+    cout << "\n\nMedias de tempo para vetor ordenado decrescente:\n\n";
+
+    mediaShell = mediaDez(tShell);
+    mediaHeap = mediaDez(tHeap);
+    mediaQuick = mediaDez(tQuick);
+    mediaMerge = mediaDez(tMerge);
+
+    cout << "Tempo medio Shell Sort: " << mediaShell << " ms\n";
+    cout << "Tempo medio Heap Sort: " << mediaHeap << " ms\n";
+    cout << "Tempo medio Quick Sort: " << mediaQuick << " ms\n";
+    cout << "Tempo medio Merge Sort: " << mediaMerge << " ms\n";
+
+    cout << "\n\n###################################################\n\n";
+    cout << "\n\nTempos de execucao para vetor ordenado decrescente\n\n";
+
+    return 0;
 }
