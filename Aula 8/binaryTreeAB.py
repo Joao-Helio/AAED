@@ -168,3 +168,19 @@ class ArvBin:
     def posOrdem(self):
         if(self.__raiz != None):
             self.__posOrdem(self.__raiz)
+
+# Adaptação para calcular alturas das subárvores
+
+    def altura_subarvores(self):
+        if self.__raiz is None:
+            return None
+        
+        return self.__altura_subarvores(self.__raiz)
+
+    def __altura_subarvores(self, raiz):
+        if raiz is None:
+            return [0, 0]
+        
+        alt_esq = self.__altura(raiz.esq)
+        alt_dir = self.__altura(raiz.dir)
+        return [alt_esq, alt_dir]

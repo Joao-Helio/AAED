@@ -119,9 +119,9 @@ tempoT1 = finalT1-inicioT1
 tempoT2 = finalT2-inicioT2
 tempoT3 = finalT3-inicioT3
 
-print('T1 = ' + '%02d.%06d'%(tempoT1.seconds, tempoT1.microseconds))
-print('T2 = ' + '%02d.%06d'%(tempoT2.seconds, tempoT2.microseconds))
-print('T3 = ' + '%02d.%06d'%(tempoT3.seconds, tempoT3.microseconds))
+print('T1 = ' + '%02d.%09d'%(tempoT1.seconds, tempoT1.microseconds))
+print('T2 = ' + '%02d.%09d'%(tempoT2.seconds, tempoT2.microseconds))
+print('T3 = ' + '%02d.%09d'%(tempoT3.seconds, tempoT3.microseconds))
 
 # Vetor ordenado - Inserção 100000 elementos
 
@@ -156,9 +156,9 @@ tempoT4 = finalT4-inicioT4
 tempoT5 = finalT5-inicioT5
 tempoT6 = finalT6-inicioT6
 
-print('T4 = ' + '%02d.%06d'%(tempoT4.seconds, tempoT4.microseconds))
-print('T5 = ' + '%02d.%06d'%(tempoT5.seconds, tempoT5.microseconds))
-print('T6 = ' + '%02d.%06d'%(tempoT6.seconds, tempoT6.microseconds))
+print('T4 = ' + '%02d.%09d'%(tempoT4.seconds, tempoT4.microseconds))
+print('T5 = ' + '%02d.%09d'%(tempoT5.seconds, tempoT5.microseconds))
+print('T6 = ' + '%02d.%09d'%(tempoT6.seconds, tempoT6.microseconds))
 
 # print(busca_binaria(vetor_ordenado, 50000))
 # print(busca_binaria(vetor_ordenado, 50))
@@ -179,6 +179,7 @@ finalT7 = datetime.now() # fim contagem de tempo T7
 inicioT8 = datetime.now() # início contagem de tempo T8
 
 arv_binaria.busca(50)
+print(arv_binaria.busca(50))
 
 finalT8 = datetime.now() # fim contagem de tempo T8
 
@@ -187,6 +188,7 @@ finalT8 = datetime.now() # fim contagem de tempo T8
 inicioT9 = datetime.now() # início contagem de tempo T9
 
 arv_binaria.busca(50000)
+print(arv_binaria.busca(50000))
 
 finalT9 = datetime.now() # fim contagem de tempo T9
 
@@ -194,9 +196,9 @@ tempoT7 = finalT7-inicioT7
 tempoT8 = finalT8-inicioT8
 tempoT9 = finalT9-inicioT9
 
-print('T7 = ' + '%02d.%06d'%(tempoT7.seconds, tempoT7.microseconds))
-print('T8 = ' + '%02d.%06d'%(tempoT8.seconds, tempoT8.microseconds))
-print('T9 = ' + '%02d.%06d'%(tempoT9.seconds, tempoT9.microseconds))
+print('T7 = ' + '%02d.%09d'%(tempoT7.seconds, tempoT7.microseconds))
+print('T8 = ' + '%02d.%09d'%(tempoT8.seconds, tempoT8.microseconds))
+print('T9 = ' + '%02d.%09d'%(tempoT9.seconds, tempoT9.microseconds))
 
 # Árvore AVL - Inserção 100000 elementos
 
@@ -214,6 +216,7 @@ finalT10 = datetime.now() # fim contagem de tempo T10
 inicioT11 = datetime.now() # início contagem de tempo T11
 
 arv_avl.busca(50)
+print('A busca por 50 na arvore AVL retornou:', arv_avl.busca(50))
 
 finalT11 = datetime.now() # fim contagem de tempo T11
 
@@ -222,6 +225,7 @@ finalT11 = datetime.now() # fim contagem de tempo T11
 inicioT12 = datetime.now() # início contagem de tempo T12
 
 arv_avl.busca(50000)
+print('A busca por 50000 na arvore AVL retornou:', arv_avl.busca(50000))
 
 finalT12 = datetime.now() # fim contagem de tempo T12
 
@@ -229,6 +233,31 @@ tempoT10 = finalT10-inicioT10
 tempoT11 = finalT11-inicioT11
 tempoT12 = finalT12-inicioT12
 
-print('T10 = ' + '%02d.%06d'%(tempoT10.seconds, tempoT10.microseconds))
-print('T11 = ' + '%02d.%06d'%(tempoT11.seconds, tempoT11.microseconds))
-print('T12 = ' + '%02d.%06d'%(tempoT12.seconds, tempoT12.microseconds))
+print('T10 = ' + '%02d.%09d'%(tempoT10.seconds, tempoT10.microseconds))
+print('T11 = ' + '%02d.%09d'%(tempoT11.seconds, tempoT11.microseconds))
+print('T12 = ' + '%02d.%09d'%(tempoT12.seconds, tempoT12.microseconds))
+
+# Árvore binária - Calcular alturas das subárvores à esquerda e à direita
+
+arv_bin_altura = arv_binaria.altura_subarvores()
+
+# Printar alturas das subárvores à esquerda e à direita
+if arv_bin_altura is not None:
+    altura_bin_esq, altura_bin_dir = arv_bin_altura
+    print("hBinEsq=", altura_bin_esq)
+    print("hBinDir=", altura_bin_dir)
+else:
+    print("A arvore esta vazia.")
+
+
+# Árvore AVL - Calcular alturas das subárvores à esquerda e à direita
+
+arv_avl_altura = arv_avl.altura_subarvores()
+
+# Printar alturas das subárvores à esquerda e à direita
+if arv_avl_altura is not None:
+    altura_avl_esq, altura_avl_dir = arv_avl_altura
+    print("hAVLEsq=", altura_avl_esq)
+    print("hAVLDir=", altura_avl_dir)
+else:
+    print("A arvore esta vazia.")

@@ -193,4 +193,19 @@ class ArvAVL:
     def posOrdem(self):
         if(self.__raiz != None):
             self.__posOrdem(self.__raiz)
+
+    # Adaptação para calcular alturas das subárvores
+    
+    def altura_subarvores(self):
+        if self.__raiz is None:
+            return None
         
+        return self.__altura_subarvores(self.__raiz)
+
+    def __altura_subarvores(self, no):
+        if no is None:
+            return [0, 0]
+        
+        altura_esq = no.esq.altura if no.esq else -1
+        altura_dir = no.dir.altura if no.dir else -1
+        return [altura_esq, altura_dir]
